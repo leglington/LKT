@@ -1871,7 +1871,7 @@ LASSOLKTData <- function(data,gridpars,
 #' @return list of matrices and values "train_x","train_y","test_x","test_y","fit","target_auc","target_rmse","n_features","auc_lambda","rmse_lambda","BIC_lambda","target_idx", "preds"
 #' @export
 LASSOLKTModel <- function(data,gridpars,allcomponents,preset=NA,presetint=T,allfeatures,specialcomponents=c(),
-                          specialfeatures=c(),specialpars=c(), target_n,removefeat=c(), removecomp=c(),test_fold = 1){
+                          specialfeatures=c(),specialpars=c(), target_n,removefeat=c(), removecomp=c(), nlambda = 50,test_fold = 1){
 
   datmat = LASSOLKTData(setDT(data),gridpars,
                         allcomponents,allfeatures,preset=preset,presetint=presetint,
@@ -1897,7 +1897,7 @@ LASSOLKTModel <- function(data,gridpars,allcomponents,preset=NA,presetint=T,allf
   #Test on remaining fold
 
   start=Sys.time()
-  fit=glmnet(x = train_x, y = train_y, family = "binomial")
+  fit=glmnet(x = train_x, y = train_y, nlambda = nlambda, family = "binomial")
   end=Sys.time()
   end-start
   print(end-start)
